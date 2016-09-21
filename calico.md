@@ -1,7 +1,5 @@
 # Project Calico 实现
 
-[TOC]
-
 ### Project Calico 简介
 
 Project Calico 是一个纯三层协议，支持VM、Docker、Rocket、OpenStack、Kubernetes，也可直接在物理机上使用。其[官网](https://www.projectcalico.org/)指出可以支持上万个主机、上百万的工作负载；更易于调试，支持IPv6以及灵活的安全策略。
@@ -12,10 +10,10 @@ Project Calico 是纯三层的 SDN 实现，它基于 BGP 协议和 Linux 自己
 
 本次使用两台 `CentOS 7.2` 的机器来实现，详情如下：
 
-|IP           |HOSTNAME|Docker Version|Etcd version|Calicoctl version|
-|:-----------:|:------:|:------------:|::|::|
-|172.30.16.121| slave3 |    1.12.1    |cluster 3.0.0/server 3.0.9|0.22.0-dev|
-|172.30.16.122| slave2 |    1.12.1    |cluster 3.0.0/server 3.0.9|0.22.0-dev|
+|IP           |HOSTNAME|Docker Version|Etcd version              |Calicoctl version|
+|:-----------:|:------:|:------------:|:------------------------:|:---------------:|
+|172.30.16.121| slave3 |    1.12.1    |cluster 3.0.0/server 3.0.9|0.22.0-dev       |
+|172.30.16.122| slave2 |    1.12.1    |cluster 3.0.0/server 3.0.9|0.22.0-dev       |
 
 Docker 的安装请参照[官网](https://docs.docker.com/engine/installation/linux/centos/#/install)。
 
@@ -206,6 +204,7 @@ CONTAINER ID   IMAGE                COMMAND               CREATED        STATUS 
 > **Note**： calico 默认自带有一个 IP Pool，范围是 192.168.0.0/16
 
 【1】`--ipip`：选项表示支持跨子网的主机上的 Docker 间网络通信
+
 【2】`--nat-outgoing`：选项表示允许 Docker Container 访问外网
 
 - 第三步
@@ -342,8 +341,7 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/docker daemon -H tcp://0.0.0.0:2375 \
-                                 -H unix:///var/run/docker.sock \                                                                     --cluster-store=etcd://172.30.16.122:2379 \                                                          --cluster-advertise=172.30.16.122:2375
+ExecStart=/usr/bin/docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://172.30.16.122:2379  --cluster-advertise=172.30.16.122:2375
 ExecReload=/bin/kill -s HUP $MAINPID
 LimitNOFILE=infinity
 LimitNPROC=infinity
@@ -364,8 +362,7 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/docker daemon -H tcp://0.0.0.0:2375 \
-                                 -H unix:///var/run/docker.sock \                                                                     --cluster-store=etcd://172.30.16.121:2379 \                                                          --cluster-advertise=172.30.16.121:2375
+ExecStart=/usr/bin/docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://172.30.16.121:2379  --cluster-advertise=172.30.16.121:2375
 ExecReload=/bin/kill -s HUP $MAINPID
 LimitNOFILE=infinity
 LimitNPROC=infinity
@@ -381,6 +378,7 @@ WantedBy=multi-user.target
 > **Note**：主要修改 `ExecStart=` 这一行记录
 
 【1】`--cluster-store=` 选项表示分布式的存储后端地址
+
 【2】`--cluster-advertise` 对外通告的地址和接口
 
 然后重新加载 `systemd` 并重启 `docker` 服务
