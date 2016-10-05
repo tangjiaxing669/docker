@@ -164,7 +164,9 @@ VOLUME /var/log/docker/
 EXPOSE 514
 
 CMD ["/start"]
+```
 
+```shell
 [root@slave713 log]# cat /home/harbor/Deploy/log/start
 #!/bin/bash
 
