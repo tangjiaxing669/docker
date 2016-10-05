@@ -254,3 +254,8 @@ docker push 172.30.16.121:80/library/rsyslog
 ...
 ```
 还有，默认的 `80` 端口 `pull image` 后，在 `Harbor` 界面中不会显示出 `80` 端口，但是你在 `push` 的时候一定要加上 `80` 端口，否则会出现 `“image not found”` 的异常。
+
+![](/picture/harbor1.bmp)
+![](/picture/harbor2.bmp)
+![](/picture/harbor3.bmp)
+![](/picture/harbor4.bmp)
