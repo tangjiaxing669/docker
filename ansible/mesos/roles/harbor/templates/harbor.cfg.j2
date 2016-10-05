@@ -1,0 +1,89 @@
+## Configuration file of Harbor
+
+#The IP address or hostname to access admin UI and registry service.
+#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
+hostname = {{ HOSTNAME }}
+
+#The protocol for accessing the UI and token/notification service, by default it is http.
+#It can be set to https if ssl is enabled on nginx.
+ui_url_protocol = {{ UI_URL_PROTOCOL }}
+
+#Email account settings for sending out password resetting emails.
+email_server = {{ EMAIL_SERVER }}
+email_server_port = {{ EMAIL_SERVER_PORT }}
+email_username = {{ EMAIL_USERNAME }}
+email_password = {{ EMAIL_PASSWORD }}
+email_from = {{ EMAIL_FROM }}
+email_ssl = {{ EMAIL_SSL }}
+
+##The initial password of Harbor admin, only works for the first time when Harbor starts. 
+#It has no effect after the first launch of Harbor.
+#Change the admin password from UI after launching Harbor.
+harbor_admin_password = {{ HARBOR_ADMIN_PASSWORD }}
+
+##By default the auth mode is db_auth, i.e. the credentials are stored in a local database.
+#Set it to ldap_auth if you want to verify a user's credentials against an LDAP server.
+auth_mode = {{ AUTH_MODE }}
+
+#The url for an ldap endpoint.
+ldap_url = {{ LDAP_URL }}
+
+#A user's DN who has the permission to search the LDAP/AD server. 
+#If your LDAP/AD server does not support anonymous search, you should configure this DN and ldap_search_pwd.
+#ldap_searchdn = uid=searchuser,ou=people,dc=mydomain,dc=com
+
+#the password of the ldap_searchdn
+#ldap_search_pwd = password
+
+#The base DN from which to look up a user in LDAP/AD
+ldap_basedn = {{ LDAP_BASEDN }}
+
+#Search filter for LDAP/AD, make sure the syntax of the filter is correct.
+#ldap_filter = (objectClass=person)
+
+# The attribute used in a search to match a user, it could be uid, cn, email, sAMAccountName or other attributes depending on your LDAP/AD  
+ldap_uid = {{ LDAP_UID }}
+
+#the scope to search for users, 1-LDAP_SCOPE_BASE, 2-LDAP_SCOPE_ONELEVEL, 3-LDAP_SCOPE_SUBTREE
+ldap_scope = {{ LDAP_SCOPE }}
+
+#The password for the root user of mysql db, change this before any production use.
+db_password = {{ DB_PASSWORD }}
+
+#Turn on or off the self-registration feature
+self_registration = {{ SELF_REGISTRATION }}
+
+#Determine whether the UI should use compressed js files. 
+#For production, set it to on. For development, set it to off.
+use_compressed_js = {{ USE_COMPRESSED_JS }}
+
+#Maximum number of job workers in job service  
+max_job_workers = {{ MAX_JOB_WORKERS }}
+
+#Secret key for encryption/decryption of password of remote registry, its length has to be 16 chars
+#**NOTE** if this changes, previously encrypted password will not be decrypted!
+#Change this key before any production use.
+secret_key = {{ SECRET_KEY }}
+
+#The expiration time (in minute) of token created by token service, default is 30 minutes
+token_expiration = {{ TOKEN_EXPIRATION }}
+
+#Determine whether the job service should verify the ssl cert when it connects to a remote registry.
+#Set this flag to off when the remote registry uses a self-signed or untrusted certificate.
+verify_remote_cert = {{ VERIFY_REMOTE_CERT }}
+
+#Determine whether or not to generate certificate for the registry's token.
+#If the value is on, the prepare script creates new root cert and private key 
+#for generating token to access the registry. If the value is off, a key/certificate must 
+#be supplied for token generation.
+customize_crt = {{ CUSTOMIZE_CRT }}
+
+#Information of your organization for certificate
+crt_country = {{ CRT_COUNTRY }}
+crt_state = {{ CRT_STATE }}
+crt_location = {{ CRT_LOCATION }}
+crt_organization = {{ CRT_ORGANIZATION }}
+crt_organizationalunit = {{ CRT_ORGANIZATIONALUNIT }}
+crt_commonname = {{ CRT_COMMONNAME }}
+crt_email = {{ CRT_EMAIL }}
+#####

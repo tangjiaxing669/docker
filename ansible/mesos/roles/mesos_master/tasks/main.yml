@@ -1,0 +1,11 @@
+- name: install mesos yum repository
+  yum: pkg=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+
+- name: Install mesos_master
+  yum: name=mesos state=latest
+
+- name: Install mesosphere-zookeeper
+  yum: name=mesosphere-zookeeper state=latest
+
+- name: Install marathon
+  yum: name=marathon state=latest

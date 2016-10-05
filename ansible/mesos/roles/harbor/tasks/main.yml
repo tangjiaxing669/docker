@@ -1,0 +1,8 @@
+- name: Configure docker.repo file
+  template: src=docker.repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+- name: Install docker-engine
+  yum: name=docker-engine state=latest
+
+- name: Download harbor script
+  command: cd /usr/local/src/ && wget https://github.com/vmware/harbor/releases/download/0.4.1/harbor-online-installer-0.4.1.tgz && tar -xf harbor-online-installer-0.4.1.tgz

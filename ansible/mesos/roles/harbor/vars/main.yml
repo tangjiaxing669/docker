@@ -1,0 +1,31 @@
+---
+# Variables listed here are application to harbor hosts.
+HOSTNAME: reg.mydomain.com
+UI_URL_PROTOCOL: http
+EMAIL_SERVER: smtp.mydomain.com
+EMAIL_SERVER_PORT: 25
+EMAIL_USERNAME: sample_admin@mydomain.com
+EMAIL_PASSWORD: abc
+EMAIL_FROM: admin <sample_admin@mydomain.com>
+EMAIL_SSL: false
+HARBOR_ADMIN_PASSWORD: Harbor12345
+AUTH_MODE: db_auth
+LDAP_URL: ldaps://ldap.mydomain.com
+LDAP_BASEDN: ou=people,dc=mydomain,dc=com
+LDAP_UID: uid
+LDAP_SCOPE: 3
+DB_PASSWORD: root123
+SELF_REGISTRATION: on
+USE_COMPRESSED_JS: on
+MAX_JOB_WORKERS: 3
+SECRET_KEY: secretkey1234567
+TOKEN_EXPIRATION: 30
+VERIFY_REMOTE_CERT: on
+CUSTOMIZE_CRT: on
+CRT_COUNTRY: CN
+CRT_STATE: State
+CRT_LOCATION: CN
+CRT_ORGANIZATION: organization
+CRT_ORGANIZATIONALUNIT: organizational unit
+CRT_COMMONNAME: example.com
+CRT_EMAIL: example@example.com

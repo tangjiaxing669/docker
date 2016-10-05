@@ -1,0 +1,23 @@
+- name: install mesos yum repository
+  yum: pkg=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+
+- name: Install mesos_slave
+  yum: name=mesos state=latest
+
+- name: Configure docker.repo file
+  template: src=docker.repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+- name: Install docker-engine
+  yum: name=docker-engine state=latest
+
+- name: Download etcd script
+  template: src=etcd_download.sh.j2 dest=/usr/local/src/etcd_download.sh
+
+- name: Exec download etcd script
+  command: bash /usr/local/src/etcd_download.sh
+
+- name: Download calicoctl script
+  template: src=calico_download.sh.j2 dest=/usr/local/src/calico_donwload.sh
+
+- name: Exec download calico script
+  command: bash /usr/local/src/calico_download.sh
