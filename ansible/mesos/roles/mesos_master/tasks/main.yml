@@ -1,0 +1,41 @@
+- name: install mesos yum repository
+  yum: pkg=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+  register: mesos_repo
+
+- name: Install mesos zookeeper and marathon
+  yum: name={{ item }}
+       state=latest
+  with_items:
+    - mesos
+    - mesosphere-zookeeper
+    - marathon
+  when: mesos_repo.rc == 0
+
+- name: Create config directory for marathon.
+  file: path=/etc/marathon/conf/
+        state=directory
+        mode=0755
+
+- name: Configura mesos zookeeper and marathon file
+  template: src={{ item.src }}
+            dest={{ item.dest }}
+  with_items:
+    - { src: 'mesos_cluster.j2', dest: '/etc/mesos-master/cluster' }
+    - { src: 'mesos_hostname.j2', dest: '/etc/mesos-master/hostname' }
+    - { src: 'mesos_quorum.j2', dest: '/etc/mesos-master/quorum' }
+    - { src: 'mesos_work_dir.j2', dest: '/etc/mesos-master/work_dir' }
+    - { src: 'mesos_zk.j2', dest: '/etc/mesos/zk' }
+    - { src: 'zoo.cfg.j2', dest: '/etc/zookeeper/conf/zoo.cfg' }
+    - { src: 'marathon_zk.j2', dest: '/etc/marathon/conf/zk' }
+    - { src: 'marathon_master.j2', dest: '/etc/marathon/conf/master' }
+    - { src: 'marathon_hostname.j2', dest: '/etc/marathon/conf/hostname' }
+
+- name: Configura zookeeper myid file for server_1
+  template: src=zk_server_1_myid.j2
+            dest=/var/lib/zookeeper/myid
+  when: SERVER_1 == ansible_default_ipv4.address
+
+- name: Configura zookeeper myid file for server_2
+  template: src=zk_server_2_myid.j2
+            dest=/var/lib/zookeeper/myid
+  when: SERVER_2 == ansible_default_ipv4.address

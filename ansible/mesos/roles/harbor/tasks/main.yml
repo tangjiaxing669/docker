@@ -1,0 +1,35 @@
+- name: Configura docker.repo file
+  template: src=docker.repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+- name: Install docker-engine
+  yum: name=docker-engine state=latest
+
+- name: Configura docker.service file
+  template: src=docker.service.j2
+            dest=/usr/lib/systemd/system/docker.service
+
+- name: Started docker-engine
+  service: name=docker state=started
+
+- name: Download Harbor
+  get_url: url=https://github.com/vmware/harbor/releases/download/{{ HARBOR_VERSION }}/{{ HARBOR_TAR_FILE_NAME }}
+           dest={{ HARBOR_INSTALL_PATH }}/{{ HARBOR_TAR_FILE_NAME }}
+           force=yes
+
+- name: Decompression Harbor
+  unarchive: src={{ HARBOR_INSTALL_PATH }}/{{ HARBOR_TAR_FILE_NAME }}
+             dest={{ HARBOR_INSTALL_PATH }}
+             remote_src=yes
+             copy=no
+
+- name: Download docker-compose
+  get_url: url=https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-{{ DOCKER_COMPOSE_SYSTEM }}-{{ DOCKER_COMPOSE_ARCH }}
+           dest=/usr/local/bin/docker-compose
+           force=yes
+           mode=0755
+
+- name: Configura harbor file
+  template: src=harbor.cfg.j2 dest={{ HARBOR_INSTALL_PATH }}/harbor/harbor.cfg
+
+- name: Download harbor image and start harbor
+  command: bash {{ HARBOR_INSTALL_PATH }}/harbor/install.sh

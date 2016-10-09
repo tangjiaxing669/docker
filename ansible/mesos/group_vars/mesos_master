@@ -1,0 +1,4 @@
+---
+# Define mesos_master group variables
+SERVER_1: 172.30.16.121
+SERVER_2: 172.30.16.122

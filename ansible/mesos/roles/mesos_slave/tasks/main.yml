@@ -1,0 +1,39 @@
+- name: install mesos yum repository
+  yum: pkg=http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+
+- name: Configure docker.repo file
+  template: src=docker.repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+- name: Install mesos_slave and docker-engine
+  yum: name={{ item }} state=latest
+  with_items:
+    - mesos
+    - docker-engine
+
+- name: Download calicoctl
+  get_url: url={{ CALICO_DOWNLOAD_URL }}
+           dest={{ CALICO_INSTALL_PATH }}/{{ CALICO_FILE_NAME }}
+           force=yes
+           mode=0755
+
+- name: Download etcd
+  get_url: url={{ ETCD_DOWNLOAD_URL }}
+           dest={{ ETCD_INSTALL_PATH }}/{{ ETCD_TAR_FILE_NAME }}
+           force=yes
+
+- name: Decompression etcd
+  unarchive: src={{ ETCD_INSTALL_PATH }}/{{ ETCD_TAR_FILE_NAME }}
+             dest={{ ETCD_INSTALL_PATH }}/
+             remote_src=yes
+             copy=no
+  register: etcd_flag
+
+- name: link exec file for etcdctl
+  file: src={{ ETCD_INSTALL_PATH }}/{{ ETCD_FILE_NAME }}/etcdctl
+        dest=/usr/bin/etcdctl
+        state=link
+  when: etcd_flag.rc == 0
+
+- name: Configura docker.service file
+  template: src=docker.service.j2
+            dest=/usr/bin/lib/systemd/system/docker.service

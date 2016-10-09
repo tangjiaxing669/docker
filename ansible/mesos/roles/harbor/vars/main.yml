@@ -1,0 +1,46 @@
+---
+# Variables listed here are application to harbor hosts.
+HOSTNAME: "{{ ansible_default_ipv4.address }}"
+UI_URL_PROTOCOL: http
+EMAIL_SERVER: smtp.mydomain.com
+EMAIL_SERVER_PORT: 25
+EMAIL_USERNAME: sample_admin@mydomain.com
+EMAIL_PASSWORD: abc
+EMAIL_FROM: admin <sample_admin@mydomain.com>
+EMAIL_SSL: false
+HARBOR_ADMIN_PASSWORD: Harbor12345
+AUTH_MODE: db_auth
+LDAP_URL: ldaps://ldap.mydomain.com
+LDAP_BASEDN: ou=people,dc=mydomain,dc=com
+LDAP_UID: uid
+LDAP_SCOPE: 3
+DB_PASSWORD: root123
+SELF_REGISTRATION: "off"
+USE_COMPRESSED_JS: "on"
+MAX_JOB_WORKERS: 3
+SECRET_KEY: secretkey1234567
+TOKEN_EXPIRATION: 30
+VERIFY_REMOTE_CERT: "off"
+CUSTOMIZE_CRT: "off"
+CRT_COUNTRY: CN
+CRT_STATE: State
+CRT_LOCATION: CN
+CRT_ORGANIZATION: organization
+CRT_ORGANIZATIONALUNIT: organizational unit
+CRT_COMMONNAME: example.com
+CRT_EMAIL: example@example.com
+
+HARBOR_INSTALL_PATH: /usr/local/src
+HARBOR_VERSION: 0.4.1
+HARBOR_TAR_FILE_NAME: harbor-online-installer-0.4.1.tgz
+
+# Variables listed here are application to docker-compose.
+DOCKER_COMPOSE_VERSION: 1.8.0 
+DOCKER_COMPOSE_SYSTEM: "{{ ansible_system }}"
+DOCKER_COMPOSE_ARCH: "{{ ansible_machine }}"
+
+# Variables listed here are application to docker.service
+DOCKER_DAEMON_TCP: tcp://0.0.0.0:2375
+DOCKER_CLUSTER_STORE: etcd://172.30.16.122:2379
+DOCKER_CLUSTER_ADVERTISE: "{{ ansible_default_ipv4.address }}:2375"
+DOCKER_INSECURE_REGISTRY: "{{ ansible_default_ipv4.address }}:80"
