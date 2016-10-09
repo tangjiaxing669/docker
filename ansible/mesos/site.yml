@@ -1,4 +1,9 @@
 ---
+- name: Apply configuration to common nodes
+  hosts: all
+  roles:
+    - common
+
 - name: Apply configuration to mesos_master nodes
   hosts: mesos_master
   roles:
