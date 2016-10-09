@@ -1,6 +1,0 @@
----
-- name: Apply configuration to mesos master nodes
-  hosts: mesos_master
-  roles:
-    - common
-    - mesos_master
